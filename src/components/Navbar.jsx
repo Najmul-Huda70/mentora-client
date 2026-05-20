@@ -1,31 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
 import { BookOpen, Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import Image from "next/image";
-// import { signOut, useSession } from "@/lib/auth-client";
-// import { useRouter } from "next/navigation";
+import { signOut, useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  // const router = useRouter();
-  // const { data: session, isPending } = useSession();
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
   // console.log(session);
 
-  // useEffect(() => {
-  //   const handleScroll = () => setScrolled(window.scrollY > 10);
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  // const handleLogOut = async () => {
-  //   await signOut();
-  //   router.push("/");
-  // };
+  const handleLogOut = async () => {
+    await signOut();
+    router.push("/");
+  };
 
   return (
     <nav
@@ -75,7 +74,7 @@ export function MainNavbar() {
             </Link>
           </div>
 
-          {/* <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             {!isPending && !session ? (
               <>
                 <Link
@@ -95,7 +94,7 @@ export function MainNavbar() {
               </>
             ) : (
               <div className="relative group">
-                <button className="flex items-center gap-3 p-1 rounded-full hover:bg-muted transition-colors border border-transparent hover:border-border">
+                <button className="flex items-center gap-3 p-2 rounded-full min-w-35 hover:bg-gray-200 transition-colors border border-transparent hover:border-border">
                   <Image
                     width={40}
                     height={40}
@@ -113,7 +112,7 @@ export function MainNavbar() {
                     <p className="text-[10px] text-slate-500">Student</p>
                   </div>
                 </button>
-                <div className="absolute right-0 top-12 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl hidden group-hover:flex flex-col py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-14 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl hidden group-hover:flex flex-col py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="px-4 py-3 border-b border-slate-100">
                     <p className="font-bold text-sm">Welcome back!</p>
                     <p className="text-xs truncate text-slate-500">
@@ -122,13 +121,13 @@ export function MainNavbar() {
                   </div>
                   <Link
                     href="/dashboard"
-                    className="px-4 py-2 text-sm hover:bg-muted flex items-center gap-3 transition-colors"
+                    className="px-4 py-2 text-sm hover:bg-gray-200 flex items-center gap-3 transition-colors"
                   >
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </Link>
                   <Link
                     href="/settings"
-                    className="px-4 py-2 text-sm hover:bg-muted flex items-center gap-3 transition-colors"
+                    className="px-4 py-2 text-sm hover:bg-gray-200 flex items-center gap-3 transition-colors"
                   >
                     <User className="w-4 h-4" /> Settings
                   </Link>
@@ -141,12 +140,12 @@ export function MainNavbar() {
                 </div>
               </div>
             )}
-          </div> */}
+          </div>
 
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg hover:bg-muted transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6" />

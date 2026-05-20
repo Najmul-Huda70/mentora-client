@@ -1,16 +1,27 @@
+import { auth } from "@/lib/auth";
 import { Chip } from "@heroui/react";
 import { BookOpen, Clock, BarChart, Users } from "lucide-react";
+import { headers } from "next/headers";
 import Image from "next/image";
 
-const fetchCourseDetails = async (id) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses/${id}`);
+const fetchCourseDetails = async (id, token) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}` || "",
+    },
+  });
   const data = await res.json();
   return data || [];
 };
 export default async function CourseDetails({ params }) {
   const { id } = await params;
   //   console.log(id);
-  const course = await fetchCourseDetails(id);
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  console.log("client e token: ", token);
+  const course = await fetchCourseDetails(id, token);
+
   //   console.log(course);
   const featuredItems = [
     { icon: Clock, label: course.duration || "12h 30m" },
