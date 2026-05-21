@@ -1,14 +1,16 @@
+import EnrollmentButton from "@/components/EnrollmentButton";
 import { auth } from "@/lib/auth";
 import { Chip } from "@heroui/react";
 import { BookOpen, Clock, BarChart, Users } from "lucide-react";
 import { headers } from "next/headers";
 import Image from "next/image";
-
+export const dynamic = "force-dynamic";
 const fetchCourseDetails = async (id, token) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses/${id}`, {
     headers: {
       authorization: `Bearer ${token}` || "",
     },
+    cache: "no-store",
   });
   const data = await res.json();
   return data || [];
@@ -19,15 +21,16 @@ export default async function CourseDetails({ params }) {
   const { token } = await auth.api.getToken({
     headers: await headers(),
   });
-  console.log("client e token: ", token);
+  // console.log("client e token: ", token);
+
   const course = await fetchCourseDetails(id, token);
 
-  //   console.log(course);
+  // console.log("course: ", course);
   const featuredItems = [
     { icon: Clock, label: course.duration || "12h 30m" },
     { icon: BarChart, label: course.level || "Beginner" },
     { icon: BookOpen, label: `${course.totalLessons || 24} Lessons` },
-    { icon: Users, label: `${course.enrollmentCount || 0} Students` },
+    { icon: Users, label: `${course.enrollCount || 0} Students` },
   ];
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
@@ -116,6 +119,9 @@ export default async function CourseDetails({ params }) {
                 ))}
               </ul>
             </div>
+
+            <EnrollmentButton course={course} />
+
             <p className="text-center text-xs text-slate-500 font-bold">
               30-Day Money-Back Guarantee • Secure Payment
             </p>
